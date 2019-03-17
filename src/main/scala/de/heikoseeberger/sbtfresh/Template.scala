@@ -27,6 +27,11 @@ private object Template {
     """|sbt.version = 1.2.8
        |""".stripMargin
 
+  def buildJvmOptions: String =
+    """|-Xss8m
+       |-Xms1G
+       |-Xmx1G""".stripMargin
+
   def buildSbt(organization: String,
                name: String,
                packageSegments: Vector[String],
@@ -59,7 +64,13 @@ private object Template {
       else
         """scalaVersion := "2.12.8","""
 
-    s"""|// *****************************************************************************
+    s"""|
+        |cancelable in Global := true
+        |addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
+        |addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+        |addCompilerPlugin(scalafixSemanticdb)
+        |
+        |// *****************************************************************************
         |// Projects
         |// *****************************************************************************
         |
@@ -70,9 +81,10 @@ private object Template {
         |    .settings(settings)
         |    .settings(
         |      libraryDependencies ++= Seq(
+        |        library.shapeless,
         |        library.scalaCheck % Test,
         |        library.scalaTest  % Test,
-        |      )
+        |      ) ++ library.cats ++ library.akka
         |    )
         |
         |// *****************************************************************************
@@ -84,9 +96,41 @@ private object Template {
         |    object Version {
         |      val scalaCheck = "1.14.0"
         |      val scalaTest  = "3.0.6"
+        |      val cats = "1.6.0"
+        |      val `cats-effect` = "1.2.0"
+        |      val `cats-mtl` = "0.5.0"
+        |      val akka = "2.5.21"
+        |      val akkaHttp = "10.1.7"
+        |      val json4s = "3.6.5"
         |    }
         |    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
         |    val scalaTest  = "org.scalatest"  %% "scalatest"  % Version.scalaTest
+        |    val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
+        |    val cats = Seq(
+        |       "org.typelevel" %% "cats-core" % Version.cats,
+        |       "org.typelevel" %% "cats-laws" % Version.cats,
+        |       "org.typelevel" %% "cats-free" % Version.cats,
+        |       "org.typelevel" %% "cats-effect" % Version.`cats-effect`,
+        |       "org.typelevel" %% "cats-mtl-core" % Version.`cats-mtl`,
+        |    )
+        |    val akka = Seq(
+        |      "com.typesafe.akka" %% "akka-actor" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-actor-typed" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence-query" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-protobuf" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-slf4j" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-remote" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-testkit" % Version.akka % Test,
+
+        |      "com.typesafe.akka" %% "akka-http-core" % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http" % Version.akkaHttp,
+        |      "de.heikoseeberger" %% "akka-http-json4s" % "1.25.2",
+        |      "org.json4s" %% "json4s-jackson" % Version.json4s,
+        |      "com.typesafe.akka" %% "akka-http-testkit" % Version.akkaHttp % Test,
+        |    )
         |  }
         |
         |// *****************************************************************************
@@ -104,13 +148,23 @@ private object Template {
         |    organizationName := "$author",
         |    startYear := Some($year),$licenseSettings
         |    scalacOptions ++= Seq(
-        |      "-unchecked",
-        |      "-deprecation",
-        |      "-language:_",
-        |      "-target:jvm-1.8",
-        |      "-encoding", "UTF-8",
-        |      "-Ypartial-unification",
-        |      "-Ywarn-unused-import",
+        |       //A -X option suggests permanence, while a -Y could disappear at any time
+        |       "-encoding", "UTF-8", // source files are in UTF-8
+        |       "-explaintypes", // Explain type errors in more detail.
+        |       "-deprecation", // warn about use of deprecated APIs
+        |       "-unchecked", // warn about unchecked type parameters
+        |       "-feature", // warn about misused language features
+        |       "-language:postfixOps", // allow higher kinded types without `import scala.language.postfixOps`
+        |       "-language:higherKinds", // allow higher kinded types without `import scala.language.higherKinds`
+        |       "-language:implicitConversions", // Allow definition of implicit functions called views
+        |       "-language:existentials", // Existential types (besides wildcard types) can be written and inferred
+        |       "-language:reflectiveCalls",
+        |       "-target:jvm-1.8",
+        |       "-Xlint", // enable handy linter warnings
+        |       //"-Xfatal-warnings", // turn compiler warnings into errors
+        |       "-Ypartial-unification", // allow the compiler to unify type constructors of different arities
+        |       "-Ywarn-unused-import",
+        |       "-Yrangepos" //Use range positions for syntax trees.
         |    ),
         |    Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
         |    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)$wartremoverSettings,
@@ -162,6 +216,8 @@ private object Template {
        |
        |# jenv
        |.java-version
+       |.bloop/
+       |.metals/
        |""".stripMargin
 
   def notice(author: String): String =
@@ -201,6 +257,10 @@ private object Template {
     s"""|addSbtPlugin("com.dwijnand"      % "sbt-dynver"      % "3.3.0")${travisPlugin}
         |addSbtPlugin("com.geirsson"      % "sbt-scalafmt"    % "1.5.1")
         |addSbtPlugin("de.heikoseeberger" % "sbt-header"      % "5.1.0")${wartRemoverPlugin}
+        |addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
+        |addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.4")
+        |addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.0")
+        |
         |""".stripMargin
   }
 

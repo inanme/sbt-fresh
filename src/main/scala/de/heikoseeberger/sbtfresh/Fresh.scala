@@ -46,6 +46,9 @@ private final class Fresh(buildDir: Path,
   def writeBuildProperties(): Path =
     write("project/build.properties", Template.buildProperties)
 
+  def writeJvmOptions(): Path =
+    write(".jvmopts", Template.buildJvmOptions)
+
   def writeBuildSbt(setUpTravis: Boolean, setUpWartremover: Boolean): Path =
     write(
       "build.sbt",
