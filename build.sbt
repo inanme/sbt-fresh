@@ -37,7 +37,7 @@ lazy val commonSettings =
   Seq(
     // scalaVersion from .travis.yml via sbt-travisci
     // scalaVersion := "2.12.3",
-    organization := "de.heikoseeberger",
+    organization := "inanme",
     organizationName := "Heiko Seeberger",
     startYear := Some(2016),
     licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
