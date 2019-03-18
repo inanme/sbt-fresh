@@ -127,6 +127,7 @@ private object Template {
 
         |      "com.typesafe.akka" %% "akka-http-core" % Version.akkaHttp,
         |      "com.typesafe.akka" %% "akka-http" % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-spray-json" % Version.akkaHttp,
         |      "de.heikoseeberger" %% "akka-http-json4s" % "1.25.2",
         |      "org.json4s" %% "json4s-jackson" % Version.json4s,
         |      "com.typesafe.akka" %% "akka-http-testkit" % Version.akkaHttp % Test,
@@ -254,12 +255,13 @@ private object Template {
       else
         ""
 
-    s"""|addSbtPlugin("com.dwijnand"      % "sbt-dynver"      % "3.3.0")${travisPlugin}
-        |addSbtPlugin("com.geirsson"      % "sbt-scalafmt"    % "1.5.1")
-        |addSbtPlugin("de.heikoseeberger" % "sbt-header"      % "5.1.0")${wartRemoverPlugin}
-        |addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
-        |addSbtPlugin("ch.epfl.scala" % "sbt-scalafix" % "0.9.4")
-        |addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.4.0")
+    s"""|addSbtPlugin("com.dwijnand"      % "sbt-dynver"           % "3.3.0")${travisPlugin}
+        |addSbtPlugin("com.geirsson"      % "sbt-scalafmt"         % "1.5.1")
+        |addSbtPlugin("de.heikoseeberger" % "sbt-header"           % "5.1.0")${wartRemoverPlugin}
+        |addSbtPlugin("net.virtual-void"  % "sbt-dependency-graph" % "0.9.2")
+        |addSbtPlugin("ch.epfl.scala"     % "sbt-scalafix"         % "0.9.4")
+        |addSbtPlugin("com.timushev.sbt"  % "sbt-updates"          % "0.4.0")
+        |addSbtPlugin("io.spray"          % "sbt-revolver"         % "0.9.1")
         |
         |""".stripMargin
   }
