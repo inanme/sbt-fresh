@@ -83,6 +83,7 @@ private object Template {
         |      libraryDependencies ++= Seq(
         |        library.shapeless,
         |        library.scalaLogging,
+        |        library.`logback-classic`,
         |        library.scalaCheck % Test,
         |        library.scalaTest  % Test,
         |      ) ++ library.cats ++ library.akka ++ library.http4s
@@ -106,6 +107,7 @@ private object Template {
         |      val http4s = "0.18.23"
         |    }
         |    val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
+        |    val `logback-classic` =  "ch.qos.logback" % "logback-classic" % "1.2.3"
         |    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
         |    val scalaTest  = "org.scalatest"  %% "scalatest"  % Version.scalaTest
         |    val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
@@ -140,6 +142,7 @@ private object Template {
         |      "com.typesafe.akka" %% "akka-http" % Version.akkaHttp,
         |      "com.typesafe.akka" %% "akka-http-spray-json" % Version.akkaHttp,
         |      "de.heikoseeberger" %% "akka-http-json4s" % "1.25.2",
+        |      "de.heikoseeberger" %% "akka-http-circe" % "1.25.2",
         |      "org.json4s" %% "json4s-jackson" % Version.json4s,
         |      "com.typesafe.akka" %% "akka-http-testkit" % Version.akkaHttp % Test,
         |    )
