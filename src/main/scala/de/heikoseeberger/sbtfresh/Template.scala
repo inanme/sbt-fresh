@@ -82,9 +82,10 @@ private object Template {
         |    .settings(
         |      libraryDependencies ++= Seq(
         |        library.shapeless,
+        |        library.scalaLogging,
         |        library.scalaCheck % Test,
         |        library.scalaTest  % Test,
-        |      ) ++ library.cats ++ library.akka
+        |      ) ++ library.cats ++ library.akka ++ library.http4s
         |    )
         |
         |// *****************************************************************************
@@ -95,14 +96,16 @@ private object Template {
         |  new {
         |    object Version {
         |      val scalaCheck = "1.14.0"
-        |      val scalaTest  = "3.0.6"
+        |      val scalaTest  = "3.0.7"
         |      val cats = "1.6.0"
         |      val `cats-effect` = "1.2.0"
         |      val `cats-mtl` = "0.5.0"
         |      val akka = "2.5.21"
-        |      val akkaHttp = "10.1.7"
+        |      val akkaHttp = "10.1.8"
         |      val json4s = "3.6.5"
+        |      val http4s = "0.18.23"
         |    }
+        |    val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
         |    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
         |    val scalaTest  = "org.scalatest"  %% "scalatest"  % Version.scalaTest
         |    val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
@@ -112,6 +115,14 @@ private object Template {
         |       "org.typelevel" %% "cats-free" % Version.cats,
         |       "org.typelevel" %% "cats-effect" % Version.`cats-effect`,
         |       "org.typelevel" %% "cats-mtl-core" % Version.`cats-mtl`,
+        |    )
+        |    val http4s = Seq(
+        |       "org.http4s" %% "http4s-dsl" % Version.http4s,
+        |       "org.http4s" %% "http4s-server" % Version.http4s,
+        |       "org.http4s" %% "http4s-json4s-jackson" % Version.http4s,
+        |       "org.http4s" %% "http4s-circe" % Version.http4s,
+        |       "org.http4s" %% "http4s-blaze-server" % Version.http4s,
+        |       "org.http4s" %% "http4s-blaze-client" % Version.http4s
         |    )
         |    val akka = Seq(
         |      "com.typesafe.akka" %% "akka-actor" % Version.akka,
