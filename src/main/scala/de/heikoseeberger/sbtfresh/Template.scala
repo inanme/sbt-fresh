@@ -82,69 +82,85 @@ private object Template {
         |    .settings(
         |      libraryDependencies ++= Seq(
         |        library.shapeless,
+        |        library.simulacrum,
         |        library.scalaLogging,
         |        library.`logback-classic`,
         |        library.scalaCheck % Test,
         |        library.scalaTest  % Test,
-        |      ) ++ library.cats ++ library.akka ++ library.http4s
+        |      ) ++ library.cats ++ library.akka ++ library.http4s ++ library.fs2 ++ library.circe
         |    )
         |
         |// *****************************************************************************
         |// Library dependencies
         |// *****************************************************************************
         |
+        |resolvers += Resolver.sonatypeRepo("snapshots")
+        |
         |lazy val library =
         |  new {
         |    object Version {
-        |      val scalaCheck = "1.14.0"
-        |      val scalaTest  = "3.0.7"
-        |      val cats = "1.6.0"
+        |      val scalaCheck    = "1.14.0"
+        |      val scalaTest     = "3.0.7"
+        |      val cats          = "1.6.0"
         |      val `cats-effect` = "1.2.0"
-        |      val `cats-mtl` = "0.5.0"
-        |      val akka = "2.5.21"
-        |      val akkaHttp = "10.1.8"
-        |      val json4s = "3.6.5"
-        |      val http4s = "0.18.23"
+        |      val `cats-mtl`    = "0.5.0"
+        |      val akka          = "2.5.21"
+        |      val akkaHttp      = "10.1.8"
+        |      val json4s        = "3.6.5"
+        |      val http4s        = "1.0.0-SNAPSHOT"
+        |      val fs2           = "1.0.4"
+        |      val circe         = "0.11.1"
         |    }
-        |    val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2"
-        |    val `logback-classic` =  "ch.qos.logback" % "logback-classic" % "1.2.3"
-        |    val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
-        |    val scalaTest  = "org.scalatest"  %% "scalatest"  % Version.scalaTest
-        |    val shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
+        |    val scalaLogging      = "com.typesafe.scala-logging" %% "scala-logging"  % "3.9.2"
+        |    val `logback-classic` = "ch.qos.logback"             % "logback-classic" % "1.2.3"
+        |    val scalaCheck        = "org.scalacheck"             %% "scalacheck"     % Version.scalaCheck
+        |    val scalaTest         = "org.scalatest"              %% "scalatest"      % Version.scalaTest
+        |    val shapeless         = "com.chuusai"                %% "shapeless"      % "2.3.3"
+        |    val simulacrum        = "com.github.mpilquist"       %% "simulacrum"     % "0.15.0"
         |    val cats = Seq(
-        |       "org.typelevel" %% "cats-core" % Version.cats,
-        |       "org.typelevel" %% "cats-laws" % Version.cats,
-        |       "org.typelevel" %% "cats-free" % Version.cats,
-        |       "org.typelevel" %% "cats-effect" % Version.`cats-effect`,
-        |       "org.typelevel" %% "cats-mtl-core" % Version.`cats-mtl`,
+        |      "org.typelevel" %% "cats-core"     % Version.cats,
+        |      "org.typelevel" %% "cats-laws"     % Version.cats,
+        |      "org.typelevel" %% "cats-free"     % Version.cats,
+        |      "org.typelevel" %% "cats-effect"   % Version.`cats-effect`,
+        |      "org.typelevel" %% "cats-mtl-core" % Version.`cats-mtl`,
+        |    )
+        |    val fs2 = Seq(
+        |      "co.fs2" %% "fs2-core"             % Version.fs2,
+        |      "co.fs2" %% "fs2-io"               % Version.fs2,
+        |      "co.fs2" %% "fs2-reactive-streams" % Version.fs2,
+        |      "co.fs2" %% "fs2-experimental"     % Version.fs2,
         |    )
         |    val http4s = Seq(
-        |       "org.http4s" %% "http4s-dsl" % Version.http4s,
-        |       "org.http4s" %% "http4s-server" % Version.http4s,
-        |       "org.http4s" %% "http4s-json4s-jackson" % Version.http4s,
-        |       "org.http4s" %% "http4s-circe" % Version.http4s,
-        |       "org.http4s" %% "http4s-blaze-server" % Version.http4s,
-        |       "org.http4s" %% "http4s-blaze-client" % Version.http4s
+        |      "org.http4s" %% "http4s-dsl"            % Version.http4s,
+        |      "org.http4s" %% "http4s-server"         % Version.http4s,
+        |      "org.http4s" %% "http4s-json4s-jackson" % Version.http4s,
+        |      "org.http4s" %% "http4s-circe"          % Version.http4s,
+        |      "org.http4s" %% "http4s-blaze-server"   % Version.http4s,
+        |      "org.http4s" %% "http4s-blaze-client"   % Version.http4s
+        |    )
+        |    val circe = Seq(
+        |      "io.circe" %% "circe-core" % Version.circe,
+        |      "io.circe" %% "circe-generic" % Version.circe,
+        |      "io.circe" %% "circe-parser" % Version.circe
         |    )
         |    val akka = Seq(
-        |      "com.typesafe.akka" %% "akka-actor" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-stream" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-actor-typed" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-persistence" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-actor"             % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream"            % Version.akka,
+        |      "com.typesafe.akka" %% "akka-actor-typed"       % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence"       % Version.akka,
         |      "com.typesafe.akka" %% "akka-persistence-query" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-stream" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-protobuf" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-slf4j" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-remote" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-testkit" % Version.akka % Test,
-
-        |      "com.typesafe.akka" %% "akka-http-core" % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http" % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http-spray-json" % Version.akkaHttp,
-        |      "de.heikoseeberger" %% "akka-http-json4s" % "1.25.2",
-        |      "de.heikoseeberger" %% "akka-http-circe" % "1.25.2",
-        |      "org.json4s" %% "json4s-jackson" % Version.json4s,
-        |      "com.typesafe.akka" %% "akka-http-testkit" % Version.akkaHttp % Test,
+        |      "com.typesafe.akka" %% "akka-stream"            % Version.akka,
+        |      "com.typesafe.akka" %% "akka-protobuf"          % Version.akka,
+        |      "com.typesafe.akka" %% "akka-slf4j"             % Version.akka,
+        |      "com.typesafe.akka" %% "akka-remote"            % Version.akka,
+        |      "com.typesafe.akka" %% "akka-testkit"           % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-http-core"         % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http"              % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-spray-json"   % Version.akkaHttp,
+        |      "de.heikoseeberger" %% "akka-http-json4s"       % "1.25.2",
+        |      "de.heikoseeberger" %% "akka-http-circe"        % "1.25.2",
+        |      "org.json4s"        %% "json4s-jackson"         % Version.json4s,
+        |      "com.typesafe.akka" %% "akka-http-testkit"      % Version.akkaHttp % Test,
         |    )
         |  }
         |
