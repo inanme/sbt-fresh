@@ -85,8 +85,10 @@ private object Template {
         |        library.simulacrum,
         |        library.scalaLogging,
         |        library.`logback-classic`,
-        |        library.scalaCheck % Test,
-        |        library.scalaTest  % Test,
+        |        library.scalaCheck             % Test,
+        |        library.scalaTest              % Test,
+        |        library.`scalacheck-shapeless` % Test,
+        |        library.scalamock              % Test,
         |      ) ++ library.cats ++ library.akka ++ library.http4s ++ library.fs2 ++ library.circe
         |    )
         |
@@ -111,12 +113,14 @@ private object Template {
         |      val fs2           = "1.0.4"
         |      val circe         = "0.11.1"
         |    }
-        |    val scalaLogging      = "com.typesafe.scala-logging" %% "scala-logging"  % "3.9.2"
-        |    val `logback-classic` = "ch.qos.logback"             % "logback-classic" % "1.2.3"
-        |    val scalaCheck        = "org.scalacheck"             %% "scalacheck"     % Version.scalaCheck
-        |    val scalaTest         = "org.scalatest"              %% "scalatest"      % Version.scalaTest
-        |    val shapeless         = "com.chuusai"                %% "shapeless"      % "2.3.3"
-        |    val simulacrum        = "com.github.mpilquist"       %% "simulacrum"     % "0.15.0"
+        |    val scalaLogging           = "com.typesafe.scala-logging" %% "scala-logging"             % "3.9.2"
+        |    val `logback-classic`      = "ch.qos.logback"             % "logback-classic"            % "1.2.3"
+        |    val scalaCheck             = "org.scalacheck"             %% "scalacheck"                % Version.scalaCheck
+        |    val scalaTest              = "org.scalatest"              %% "scalatest"                 % Version.scalaTest
+        |    val shapeless              = "com.chuusai"                %% "shapeless"                 % "2.3.3"
+        |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.1"
+        |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.1.0"
+        |    val simulacrum             = "com.github.mpilquist"       %% "simulacrum"                % "0.15.0"
         |    val cats = Seq(
         |      "org.typelevel" %% "cats-core"     % Version.cats,
         |      "org.typelevel" %% "cats-laws"     % Version.cats,
