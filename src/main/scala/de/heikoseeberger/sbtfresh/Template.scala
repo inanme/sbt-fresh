@@ -107,6 +107,7 @@ private object Template {
         |      val `cats-mtl`    = "0.5.0"
         |      val akka          = "2.5.22"
         |      val akkaHttp      = "10.1.8"
+        |      val akkaKafka     = "1.0.1"
         |      val json4s        = "3.6.5"
         |      val http4s        = "0.20.0-RC1"
         |      val fs2           = "1.0.4"
@@ -150,23 +151,35 @@ private object Template {
         |      "io.circe" %% "circe-parser"  % Version.circe
         |    )
         |    val akka = Seq(
-        |      "com.typesafe.akka" %% "akka-actor"             % Version.akka,
-        |      "com.typesafe.akka" %% "akka-stream"            % Version.akka,
-        |      "com.typesafe.akka" %% "akka-actor-typed"       % Version.akka,
-        |      "com.typesafe.akka" %% "akka-persistence"       % Version.akka,
-        |      "com.typesafe.akka" %% "akka-persistence-query" % Version.akka,
-        |      "com.typesafe.akka" %% "akka-stream"            % Version.akka,
-        |      "com.typesafe.akka" %% "akka-protobuf"          % Version.akka,
-        |      "com.typesafe.akka" %% "akka-slf4j"             % Version.akka,
-        |      "com.typesafe.akka" %% "akka-remote"            % Version.akka,
-        |      "com.typesafe.akka" %% "akka-testkit"           % Version.akka % Test,
-        |      "com.typesafe.akka" %% "akka-http-core"         % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http"              % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http-spray-json"   % Version.akkaHttp,
-        |      "de.heikoseeberger" %% "akka-http-json4s"       % "1.25.2",
-        |      "de.heikoseeberger" %% "akka-http-circe"        % "1.25.2",
-        |      "org.json4s"        %% "json4s-jackson"         % Version.json4s,
-        |      "com.typesafe.akka" %% "akka-http-testkit"      % Version.akkaHttp % Test,
+        |      "com.typesafe.akka" %% "akka-actor"               % Version.akka,
+        |      "com.typesafe.akka" %% "akka-agent"               % Version.akka,
+        |      "com.typesafe.akka" %% "akka-camel"               % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster"             % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-metrics"     % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-sharding"    % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-tools"       % Version.akka,
+        |      "com.typesafe.akka" %% "akka-contrib"             % Version.akka,
+        |      "com.typesafe.akka" %% "akka-multi-node-testkit"  % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-osgi"                % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence"         % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence-tck"     % Version.akka,
+        |      "com.typesafe.akka" %% "akka-remote"              % Version.akka,
+        |      "com.typesafe.akka" %% "akka-slf4j"               % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream"              % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream-kafka"        % Version.akkaKafka,
+        |      "com.typesafe.akka" %% "akka-stream-testkit"      % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-testkit"             % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-actor-typed"         % Version.akka,
+        |      "com.typesafe.akka" %% "akka-actor-testkit-typed" % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-distributed-data"    % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence-query"   % Version.akka,
+        |      "com.typesafe.akka" %% "akka-http-core"           % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http"                % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-spray-json"     % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-testkit"        % Version.akkaHttp % Test,
+        |      "de.heikoseeberger" %% "akka-http-json4s"         % "1.25.2",
+        |      "de.heikoseeberger" %% "akka-http-circe"          % "1.25.2",
+        |      "org.json4s"        %% "json4s-jackson"           % Version.json4s,
         |    )
         |
         |    val metrics = Seq(
