@@ -64,10 +64,9 @@ private object Template {
       else
         """scalaVersion := "2.12.8","""
 
-    s"""|
-        |cancelable in Global := true
-        |addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")
-        |addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
+    s"""|cancelable in Global := true
+        |addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.9")
+        |addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.1" cross CrossVersion.full)
         |addCompilerPlugin(scalafixSemanticdb)
         |
         |// *****************************************************************************
@@ -89,7 +88,7 @@ private object Template {
         |        library.scalaTest              % Test,
         |        library.`scalacheck-shapeless` % Test,
         |        library.scalamock              % Test,
-        |      ) ++ library.cats ++ library.akka ++ library.http4s ++ library.fs2 ++ library.circe
+        |      ) ++ library.cats ++ library.akka ++ library.http4s ++ library.fs2 ++ library.circe ++ library.metrics
         |    )
         |
         |// *****************************************************************************
@@ -106,12 +105,15 @@ private object Template {
         |      val cats          = "1.6.0"
         |      val `cats-effect` = "1.2.0"
         |      val `cats-mtl`    = "0.5.0"
-        |      val akka          = "2.5.21"
+        |      val akka          = "2.5.22"
         |      val akkaHttp      = "10.1.8"
         |      val json4s        = "3.6.5"
-        |      val http4s        = "1.0.0-SNAPSHOT"
+        |      val http4s        = "0.20.0-RC1"
         |      val fs2           = "1.0.4"
         |      val circe         = "0.11.1"
+        |      val codahale      = "4.0.5"
+        |      val prometheus    = "0.5.0"
+        |      val micrometer    = "1.1.4"
         |    }
         |    val scalaLogging           = "com.typesafe.scala-logging" %% "scala-logging"             % "3.9.2"
         |    val `logback-classic`      = "ch.qos.logback"             % "logback-classic"            % "1.2.3"
@@ -143,9 +145,9 @@ private object Template {
         |      "org.http4s" %% "http4s-blaze-client"   % Version.http4s
         |    )
         |    val circe = Seq(
-        |      "io.circe" %% "circe-core" % Version.circe,
+        |      "io.circe" %% "circe-core"    % Version.circe,
         |      "io.circe" %% "circe-generic" % Version.circe,
-        |      "io.circe" %% "circe-parser" % Version.circe
+        |      "io.circe" %% "circe-parser"  % Version.circe
         |    )
         |    val akka = Seq(
         |      "com.typesafe.akka" %% "akka-actor"             % Version.akka,
@@ -166,44 +168,64 @@ private object Template {
         |      "org.json4s"        %% "json4s-jackson"         % Version.json4s,
         |      "com.typesafe.akka" %% "akka-http-testkit"      % Version.akkaHttp % Test,
         |    )
+        |
+        |    val metrics = Seq(
+        |      "io.micrometer"         % "micrometer-core"                % Version.micrometer,
+        |      "io.micrometer"         % "micrometer-registry-prometheus" % Version.micrometer,
+        |      "io.micrometer"         % "micrometer-registry-graphite"   % Version.micrometer,
+        |      "io.dropwizard.metrics" % "metrics-core"                   % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-httpclient"             % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-graphite"               % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-jvm"                    % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-json"                   % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-jmx"                    % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-healthchecks"           % Version.codahale,
+        |      "io.dropwizard.metrics" % "metrics-logback"                % Version.codahale,
+        |      "io.prometheus"         % "simpleclient"                   % Version.prometheus,
+        |      "io.prometheus"         % "simpleclient_common"            % Version.prometheus,
+        |      "io.prometheus"         % "simpleclient_hotspot"           % Version.prometheus,
+        |      "io.prometheus"         % "simpleclient_dropwizard"        % Version.prometheus,
+        |      "io.prometheus"         % "simpleclient_servlet"           % Version.prometheus
+        |    )
+        |
         |  }
         |
         |// *****************************************************************************
         |// Settings
         |// *****************************************************************************
         |
-        |lazy val settings =
-        |  commonSettings ++
-        |  scalafmtSettings
+        |lazy val settings = commonSettings ++ scalafmtSettings
         |
         |lazy val commonSettings =
         |  Seq(
-        |    $scalaVersion
-        |    organization := "$organization",
-        |    organizationName := "$author",
-        |    startYear := Some($year),$licenseSettings
+        |    scalaVersion := "2.12.8",
+        |    organization := "default",
+        |    organizationName := "mertinan",
+        |    startYear := Some(2019),
+        |    licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0")),
         |    scalacOptions ++= Seq(
-        |       //A -X option suggests permanence, while a -Y could disappear at any time
-        |       "-encoding", "UTF-8", // source files are in UTF-8
-        |       "-explaintypes", // Explain type errors in more detail.
-        |       "-deprecation", // warn about use of deprecated APIs
-        |       "-unchecked", // warn about unchecked type parameters
-        |       "-feature", // warn about misused language features
-        |       "-language:postfixOps", // allow higher kinded types without `import scala.language.postfixOps`
-        |       "-language:higherKinds", // allow higher kinded types without `import scala.language.higherKinds`
-        |       "-language:implicitConversions", // Allow definition of implicit functions called views
-        |       "-language:existentials", // Existential types (besides wildcard types) can be written and inferred
-        |       "-language:reflectiveCalls",
-        |       "-target:jvm-1.8",
-        |       "-Xlint", // enable handy linter warnings
-        |       //"-Xfatal-warnings", // turn compiler warnings into errors
-        |       "-Ypartial-unification", // allow the compiler to unify type constructors of different arities
-        |       "-Ywarn-unused-import",
-        |       "-Yrangepos" //Use range positions for syntax trees.
+        |      //A -X option suggests permanence, while a -Y could disappear at any time
+        |      "-encoding",
+        |      "UTF-8", // source files are in UTF-8
+        |      "-explaintypes", // Explain type errors in more detail.
+        |      "-deprecation", // warn about use of deprecated APIs
+        |      "-unchecked", // warn about unchecked type parameters
+        |      "-feature", // warn about misused language features
+        |      "-language:postfixOps", // allow higher kinded types without `import scala.language.postfixOps`
+        |      "-language:higherKinds", // allow higher kinded types without `import scala.language.higherKinds`
+        |      "-language:implicitConversions", // Allow definition of implicit functions called views
+        |      "-language:existentials", // Existential types (besides wildcard types) can be written and inferred
+        |      "-language:reflectiveCalls",
+        |      "-target:jvm-1.8",
+        |      "-Xlint", // enable handy linter warnings
+        |      //"-Xfatal-warnings", // turn compiler warnings into errors
+        |      "-Ypartial-unification", // allow the compiler to unify type constructors of different arities
+        |      "-Ywarn-unused-import",
+        |      "-Yrangepos" //Use range positions for syntax trees.
         |    ),
         |    Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
-        |    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)$wartremoverSettings,
-        |)
+        |    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value),
+        |  )
         |
         |lazy val scalafmtSettings =
         |  Seq(
