@@ -65,7 +65,7 @@ private object Template {
         """scalaVersion := "2.12.8","""
 
     s"""|cancelable in Global := true
-        |addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.9")
+        |addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.10")
         |addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.1" cross CrossVersion.full)
         |addCompilerPlugin(scalafixSemanticdb)
         |
@@ -87,7 +87,7 @@ private object Template {
         |        library.scalaCheck             % Test,
         |        library.scalaTest              % Test,
         |        library.`scalacheck-shapeless` % Test,
-        |        library.scalamock              % Test,
+        |        library.scalamock              % Test
         |      ) ++ library.cats ++ library.akka ++ library.http4s ++ library.fs2 ++ library.circe ++ library.metrics
         |    )
         |
@@ -123,19 +123,19 @@ private object Template {
         |    val shapeless              = "com.chuusai"                %% "shapeless"                 % "2.3.3"
         |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.1"
         |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.1.0"
-        |    val simulacrum             = "com.github.mpilquist"       %% "simulacrum"                % "0.15.0"
+        |    val simulacrum             = "com.github.mpilquist"       %% "simulacrum"                % "0.16.0"
         |    val cats = Seq(
         |      "org.typelevel" %% "cats-core"     % Version.cats,
         |      "org.typelevel" %% "cats-laws"     % Version.cats,
         |      "org.typelevel" %% "cats-free"     % Version.cats,
         |      "org.typelevel" %% "cats-effect"   % Version.`cats-effect`,
-        |      "org.typelevel" %% "cats-mtl-core" % Version.`cats-mtl`,
+        |      "org.typelevel" %% "cats-mtl-core" % Version.`cats-mtl`
         |    )
         |    val fs2 = Seq(
         |      "co.fs2" %% "fs2-core"             % Version.fs2,
         |      "co.fs2" %% "fs2-io"               % Version.fs2,
         |      "co.fs2" %% "fs2-reactive-streams" % Version.fs2,
-        |      "co.fs2" %% "fs2-experimental"     % Version.fs2,
+        |      "co.fs2" %% "fs2-experimental"     % Version.fs2
         |    )
         |    val http4s = Seq(
         |      "org.http4s" %% "http4s-dsl"            % Version.http4s,
@@ -151,35 +151,40 @@ private object Template {
         |      "io.circe" %% "circe-parser"  % Version.circe
         |    )
         |    val akka = Seq(
-        |      "com.typesafe.akka" %% "akka-actor"               % Version.akka,
-        |      "com.typesafe.akka" %% "akka-agent"               % Version.akka,
-        |      "com.typesafe.akka" %% "akka-camel"               % Version.akka,
-        |      "com.typesafe.akka" %% "akka-cluster"             % Version.akka,
-        |      "com.typesafe.akka" %% "akka-cluster-metrics"     % Version.akka,
-        |      "com.typesafe.akka" %% "akka-cluster-sharding"    % Version.akka,
-        |      "com.typesafe.akka" %% "akka-cluster-tools"       % Version.akka,
-        |      "com.typesafe.akka" %% "akka-contrib"             % Version.akka,
-        |      "com.typesafe.akka" %% "akka-multi-node-testkit"  % Version.akka % Test,
-        |      "com.typesafe.akka" %% "akka-osgi"                % Version.akka,
-        |      "com.typesafe.akka" %% "akka-persistence"         % Version.akka,
-        |      "com.typesafe.akka" %% "akka-persistence-tck"     % Version.akka,
-        |      "com.typesafe.akka" %% "akka-remote"              % Version.akka,
-        |      "com.typesafe.akka" %% "akka-slf4j"               % Version.akka,
-        |      "com.typesafe.akka" %% "akka-stream"              % Version.akka,
-        |      "com.typesafe.akka" %% "akka-stream-kafka"        % Version.akkaKafka,
-        |      "com.typesafe.akka" %% "akka-stream-testkit"      % Version.akka % Test,
-        |      "com.typesafe.akka" %% "akka-testkit"             % Version.akka % Test,
-        |      "com.typesafe.akka" %% "akka-actor-typed"         % Version.akka,
-        |      "com.typesafe.akka" %% "akka-actor-testkit-typed" % Version.akka % Test,
-        |      "com.typesafe.akka" %% "akka-distributed-data"    % Version.akka,
-        |      "com.typesafe.akka" %% "akka-persistence-query"   % Version.akka,
-        |      "com.typesafe.akka" %% "akka-http-core"           % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http"                % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http-spray-json"     % Version.akkaHttp,
-        |      "com.typesafe.akka" %% "akka-http-testkit"        % Version.akkaHttp % Test,
-        |      "de.heikoseeberger" %% "akka-http-json4s"         % "1.25.2",
-        |      "de.heikoseeberger" %% "akka-http-circe"          % "1.25.2",
-        |      "org.json4s"        %% "json4s-jackson"           % Version.json4s,
+        |      "com.typesafe.akka" %% "akka-actor"                  % Version.akka,
+        |      "com.typesafe.akka" %% "akka-actor-testkit-typed"    % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-actor-typed"            % Version.akka,
+        |      "com.typesafe.akka" %% "akka-agent"                  % Version.akka,
+        |      "com.typesafe.akka" %% "akka-camel"                  % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster"                % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-tools"          % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-metrics"        % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-sharding"       % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-sharding-typed" % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-tools"          % Version.akka,
+        |      "com.typesafe.akka" %% "akka-cluster-typed"          % Version.akka,
+        |      "com.typesafe.akka" %% "akka-contrib"                % Version.akka,
+        |      "com.typesafe.akka" %% "akka-distributed-data"       % Version.akka,
+        |      "com.typesafe.akka" %% "akka-http"                   % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-core"              % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-jackson"           % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-http-testkit"           % Version.akkaHttp,
+        |      "com.typesafe.akka" %% "akka-multi-node-testkit"     % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-osgi"                   % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence"            % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence-query"      % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence-tck"        % Version.akka,
+        |      "com.typesafe.akka" %% "akka-persistence-typed"      % Version.akka,
+        |      "com.typesafe.akka" %% "akka-remote"                 % Version.akka,
+        |      "com.typesafe.akka" %% "akka-slf4j"                  % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream"                 % Version.akka,
+        |      "com.typesafe.akka" %% "akka-stream-kafka"           % Version.akkaKafka,
+        |      "com.typesafe.akka" %% "akka-stream-testkit"         % Version.akka % Test,
+        |      "com.typesafe.akka" %% "akka-stream-typed"           % Version.akka,
+        |      "com.typesafe.akka" %% "akka-testkit"                % Version.akka % Test,
+        |      "de.heikoseeberger" %% "akka-http-json4s"            % "1.25.2",
+        |      "de.heikoseeberger" %% "akka-http-circe"             % "1.25.2",
+        |      "org.json4s"        %% "json4s-jackson"              % Version.json4s
         |    )
         |
         |    val metrics = Seq(
@@ -237,12 +242,12 @@ private object Template {
         |      "-Yrangepos" //Use range positions for syntax trees.
         |    ),
         |    Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
-        |    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value),
+        |    Test / unmanagedSourceDirectories := Seq((Test / scalaSource).value)
         |  )
         |
         |lazy val scalafmtSettings =
         |  Seq(
-        |    scalafmtOnCompile := true,
+        |    scalafmtOnCompile := true
         |  )
         |""".stripMargin
   }
