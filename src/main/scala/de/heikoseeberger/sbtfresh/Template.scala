@@ -24,7 +24,7 @@ private object Template {
   private val year = now().getYear
 
   def buildProperties: String =
-    """|sbt.version = 1.2.8
+    """|sbt.version = 1.3.2
        |""".stripMargin
 
   def buildJvmOptions: String =
@@ -60,9 +60,9 @@ private object Template {
     val scalaVersion =
       if (setUpTravis)
         """|// scalaVersion from .travis.yml via sbt-travisci
-           |    // scalaVersion := "2.12.8",""".stripMargin
+           |    // scalaVersion := "2.12.10",""".stripMargin
       else
-        """scalaVersion := "2.12.8","""
+        """scalaVersion := "2.12.10","""
 
     s"""|cancelable in Global := true
         |addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.10")
@@ -100,30 +100,32 @@ private object Template {
         |lazy val library =
         |  new {
         |    object Version {
-        |      val scalaCheck    = "1.14.0"
-        |      val scalaTest     = "3.0.7"
-        |      val cats          = "1.6.0"
-        |      val `cats-effect` = "1.2.0"
-        |      val `cats-mtl`    = "0.5.0"
-        |      val akka          = "2.5.22"
-        |      val akkaHttp      = "10.1.8"
-        |      val akkaKafka     = "1.0.1"
-        |      val json4s        = "3.6.5"
-        |      val http4s        = "0.20.0-RC1"
-        |      val fs2           = "1.0.4"
-        |      val circe         = "0.11.1"
+        |      val scalaCheck    = "1.14.1"
+        |      val scalaTest     = "3.0.8"
+        |      val cats          = "2.0.0"
+        |      val `cats-effect` = "2.0.0"
+        |      val `cats-mtl`    = "0.7.0"
+        |      val akka          = "2.5.25"
+        |      val akkaHttp      = "10.1.10"
+        |      val akkaKafka     = "1.0.5"
+        |      val json4s        = "3.6.7"
+        |      val http4s        = "0.20.11"
+        |      val fs2           = "2.0.1"
+        |      val circe         = "0.12.1"
         |      val codahale      = "4.0.5"
         |      val prometheus    = "0.5.0"
         |      val micrometer    = "1.1.4"
+        |      val shapeless     = "2.3.3"
+        |      val simulacrum    = "1.0.0"
         |    }
         |    val scalaLogging           = "com.typesafe.scala-logging" %% "scala-logging"             % "3.9.2"
         |    val `logback-classic`      = "ch.qos.logback"             % "logback-classic"            % "1.2.3"
         |    val scalaCheck             = "org.scalacheck"             %% "scalacheck"                % Version.scalaCheck
         |    val scalaTest              = "org.scalatest"              %% "scalatest"                 % Version.scalaTest
-        |    val shapeless              = "com.chuusai"                %% "shapeless"                 % "2.3.3"
+        |    val shapeless              = "com.chuusai"                %% "shapeless"                 % Version.shapeless
         |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.1"
         |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.1.0"
-        |    val simulacrum             = "com.github.mpilquist"       %% "simulacrum"                % "0.16.0"
+        |    val simulacrum             = "org.typelevel"              %% "simulacrum"                % Version.simulacrum
         |    val cats = Seq(
         |      "org.typelevel" %% "cats-core"     % Version.cats,
         |      "org.typelevel" %% "cats-laws"     % Version.cats,
@@ -216,7 +218,7 @@ private object Template {
         |
         |lazy val commonSettings =
         |  Seq(
-        |    scalaVersion := "2.12.8",
+        |    scalaVersion := "2.12.10",
         |    organization := "default",
         |    organizationName := "mertinan",
         |    startYear := Some(2019),
@@ -319,21 +321,21 @@ private object Template {
     val travisPlugin =
       if (setUpTravis)
         """|
-           |addSbtPlugin("com.dwijnand"      % "sbt-travisci"    % "1.1.3")""".stripMargin
+           |addSbtPlugin("com.dwijnand"      % "sbt-travisci"    % "1.2.0")""".stripMargin
       else
         ""
     val wartRemoverPlugin =
       if (setUpWartremover)
         """|
-           |addSbtPlugin("org.wartremover"   % "sbt-wartremover" % "2.3.1")""".stripMargin
+           |addSbtPlugin("org.wartremover"   % "sbt-wartremover" % "2.4.2")""".stripMargin
       else
         ""
 
     s"""|addSbtPlugin("com.dwijnand"      % "sbt-dynver"           % "3.3.0")${travisPlugin}
-        |addSbtPlugin("com.geirsson"      % "sbt-scalafmt"         % "1.5.1")
+        |addSbtPlugin("org.scalameta"     % "sbt-scalafmt"         % "2.0.1")
         |addSbtPlugin("de.heikoseeberger" % "sbt-header"           % "5.1.0")${wartRemoverPlugin}
         |addSbtPlugin("net.virtual-void"  % "sbt-dependency-graph" % "0.9.2")
-        |addSbtPlugin("ch.epfl.scala"     % "sbt-scalafix"         % "0.9.4")
+        |addSbtPlugin("ch.epfl.scala"      % "sbt-scalafix"          % "0.9.7-1")
         |addSbtPlugin("com.timushev.sbt"  % "sbt-updates"          % "0.4.0")
         |addSbtPlugin("io.spray"          % "sbt-revolver"         % "0.9.1")
         |
@@ -369,8 +371,8 @@ private object Template {
   }
 
   def scalafmtConf: String =
-    """|style = defaultWithAlign
-       |
+    """|version                           = 2.0.1
+       |style                             = defaultWithAlign
        |danglingParentheses               = true
        |indentOperator                    = spray
        |maxColumn                         = 100
@@ -385,7 +387,7 @@ private object Template {
     """|language: scala
        |
        |scala:
-       |  - 2.12.8
+       |  - 2.12.10
        |
        |jdk:
        |  - oraclejdk8
