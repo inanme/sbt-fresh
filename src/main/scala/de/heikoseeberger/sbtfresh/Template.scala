@@ -100,7 +100,7 @@ private object Template {
         |lazy val library =
         |  new {
         |    object Version {
-        |      val scalaCheck    = "1.14.1"
+        |      val scalaCheck    = "1.14.2"
         |      val scalaTest     = "3.0.8"
         |      val cats          = "2.0.0"
         |      val `cats-effect` = "2.0.0"
@@ -111,10 +111,10 @@ private object Template {
         |      val json4s        = "3.6.7"
         |      val http4s        = "0.20.11"
         |      val fs2           = "2.0.1"
-        |      val circe         = "0.12.1"
-        |      val codahale      = "4.0.5"
-        |      val prometheus    = "0.5.0"
-        |      val micrometer    = "1.1.4"
+        |      val circe         = "0.12.2"
+        |      val codahale      = "4.1.0"
+        |      val prometheus    = "0.7.0"
+        |      val micrometer    = "1.3.0"
         |      val shapeless     = "2.3.3"
         |      val simulacrum    = "1.0.0"
         |    }
@@ -123,8 +123,8 @@ private object Template {
         |    val scalaCheck             = "org.scalacheck"             %% "scalacheck"                % Version.scalaCheck
         |    val scalaTest              = "org.scalatest"              %% "scalatest"                 % Version.scalaTest
         |    val shapeless              = "com.chuusai"                %% "shapeless"                 % Version.shapeless
-        |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.1"
-        |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.1.0"
+        |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.3"
+        |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.4.0"
         |    val simulacrum             = "org.typelevel"              %% "simulacrum"                % Version.simulacrum
         |    val cats = Seq(
         |      "org.typelevel" %% "cats-core"     % Version.cats,
@@ -184,8 +184,8 @@ private object Template {
         |      "com.typesafe.akka" %% "akka-stream-testkit"         % Version.akka % Test,
         |      "com.typesafe.akka" %% "akka-stream-typed"           % Version.akka,
         |      "com.typesafe.akka" %% "akka-testkit"                % Version.akka % Test,
-        |      "de.heikoseeberger" %% "akka-http-json4s"            % "1.25.2",
-        |      "de.heikoseeberger" %% "akka-http-circe"             % "1.25.2",
+        |      "de.heikoseeberger" %% "akka-http-json4s"            % "1.29.1",
+        |      "de.heikoseeberger" %% "akka-http-circe"             % "1.29.1",
         |      "org.json4s"        %% "json4s-jackson"              % Version.json4s
         |    )
         |
