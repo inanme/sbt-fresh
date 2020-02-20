@@ -24,7 +24,7 @@ private object Template {
   private val year = now().getYear
 
   def buildProperties: String =
-    """|sbt.version = 1.3.2
+    """|sbt.version = 1.3.8
        |""".stripMargin
 
   def buildJvmOptions: String =
@@ -60,13 +60,12 @@ private object Template {
     val scalaVersion =
       if (setUpTravis)
         """|// scalaVersion from .travis.yml via sbt-travisci
-           |    // scalaVersion := "2.12.10",""".stripMargin
+           |    // scalaVersion := "2.13.1",""".stripMargin
       else
-        """scalaVersion := "2.12.10","""
+        """scalaVersion := "2.13.1","""
 
     s"""|cancelable in Global := true
-        |addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.10")
-        |addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.1" cross CrossVersion.full)
+        |addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full)
         |addCompilerPlugin(scalafixSemanticdb)
         |
         |// *****************************************************************************
@@ -100,30 +99,32 @@ private object Template {
         |lazy val library =
         |  new {
         |    object Version {
-        |      val scalaCheck    = "1.14.2"
-        |      val scalaTest     = "3.0.8"
-        |      val cats          = "2.0.0"
-        |      val `cats-effect` = "2.0.0"
-        |      val `cats-mtl`    = "0.7.0"
-        |      val akka          = "2.5.25"
-        |      val akkaHttp      = "10.1.10"
-        |      val akkaKafka     = "1.0.5"
-        |      val json4s        = "3.6.7"
-        |      val http4s        = "0.20.11"
-        |      val fs2           = "2.0.1"
-        |      val circe         = "0.12.2"
-        |      val codahale      = "4.1.0"
-        |      val prometheus    = "0.7.0"
-        |      val micrometer    = "1.3.0"
-        |      val shapeless     = "2.3.3"
-        |      val simulacrum    = "1.0.0"
+        |      val scalaCheck              = "1.14.3"
+        |      val scalaTest               = "3.1.0"
+        |      val cats                    = "2.1.0"
+        |      val `cats-effect`           = "2.1.1"
+        |      val `cats-mtl`              = "0.7.0"
+        |      val akka                    = "2.6.3"
+        |      val akkaHttp                = "10.1.11"
+        |      val akkaKafka               = "2.0.2"
+        |      val json4s                  = "3.6.7"
+        |      val http4s                  = "0.21.1"
+        |      val fs2                     = "2.2.2"
+        |      val circe                   = "0.13.0"
+        |      val codahale                = "4.1.2"
+        |      val prometheus              = "0.8.1"
+        |      val micrometer              = "1.3.5"
+        |      val shapeless               = "2.3.3"
+        |      val simulacrum              = "1.0.0"
+        |      val `scalacheck-shapeless`  = "1.2.4"
+        |      val `akka-http-marshallers` = "1.31.0"
         |    }
         |    val scalaLogging           = "com.typesafe.scala-logging" %% "scala-logging"             % "3.9.2"
         |    val `logback-classic`      = "ch.qos.logback"             % "logback-classic"            % "1.2.3"
         |    val scalaCheck             = "org.scalacheck"             %% "scalacheck"                % Version.scalaCheck
         |    val scalaTest              = "org.scalatest"              %% "scalatest"                 % Version.scalaTest
         |    val shapeless              = "com.chuusai"                %% "shapeless"                 % Version.shapeless
-        |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % "1.2.3"
+        |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % Version.`scalacheck-shapeless`
         |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.4.0"
         |    val simulacrum             = "org.typelevel"              %% "simulacrum"                % Version.simulacrum
         |    val cats = Seq(
@@ -156,8 +157,6 @@ private object Template {
         |      "com.typesafe.akka" %% "akka-actor"                  % Version.akka,
         |      "com.typesafe.akka" %% "akka-actor-testkit-typed"    % Version.akka % Test,
         |      "com.typesafe.akka" %% "akka-actor-typed"            % Version.akka,
-        |      "com.typesafe.akka" %% "akka-agent"                  % Version.akka,
-        |      "com.typesafe.akka" %% "akka-camel"                  % Version.akka,
         |      "com.typesafe.akka" %% "akka-cluster"                % Version.akka,
         |      "com.typesafe.akka" %% "akka-cluster-tools"          % Version.akka,
         |      "com.typesafe.akka" %% "akka-cluster-metrics"        % Version.akka,
@@ -165,7 +164,6 @@ private object Template {
         |      "com.typesafe.akka" %% "akka-cluster-sharding-typed" % Version.akka,
         |      "com.typesafe.akka" %% "akka-cluster-tools"          % Version.akka,
         |      "com.typesafe.akka" %% "akka-cluster-typed"          % Version.akka,
-        |      "com.typesafe.akka" %% "akka-contrib"                % Version.akka,
         |      "com.typesafe.akka" %% "akka-distributed-data"       % Version.akka,
         |      "com.typesafe.akka" %% "akka-http"                   % Version.akkaHttp,
         |      "com.typesafe.akka" %% "akka-http-core"              % Version.akkaHttp,
@@ -184,8 +182,8 @@ private object Template {
         |      "com.typesafe.akka" %% "akka-stream-testkit"         % Version.akka % Test,
         |      "com.typesafe.akka" %% "akka-stream-typed"           % Version.akka,
         |      "com.typesafe.akka" %% "akka-testkit"                % Version.akka % Test,
-        |      "de.heikoseeberger" %% "akka-http-json4s"            % "1.29.1",
-        |      "de.heikoseeberger" %% "akka-http-circe"             % "1.29.1",
+        |      "de.heikoseeberger" %% "akka-http-json4s"            % Version.`akka-http-marshallers`,
+        |      "de.heikoseeberger" %% "akka-http-circe"             % Version.`akka-http-marshallers`,
         |      "org.json4s"        %% "json4s-jackson"              % Version.json4s
         |    )
         |
@@ -218,7 +216,7 @@ private object Template {
         |
         |lazy val commonSettings =
         |  Seq(
-        |    scalaVersion := "2.12.10",
+        |    scalaVersion := "2.13.1",
         |    organization := "default",
         |    organizationName := "mertinan",
         |    startYear := Some(2019),
@@ -239,8 +237,8 @@ private object Template {
         |      "-target:jvm-1.8",
         |      "-Xlint", // enable handy linter warnings
         |      //"-Xfatal-warnings", // turn compiler warnings into errors
-        |      "-Ypartial-unification", // allow the compiler to unify type constructors of different arities
-        |      "-Ywarn-unused-import",
+        |      //"-Ypartial-unification", // allow the compiler to unify type constructors of different arities
+        |      //"-Ywarn-unused-import",
         |      "-Yrangepos" //Use range positions for syntax trees.
         |    ),
         |    Compile / unmanagedSourceDirectories := Seq((Compile / scalaSource).value),
@@ -387,7 +385,7 @@ private object Template {
     """|language: scala
        |
        |scala:
-       |  - 2.12.10
+       |  - 2.13.1
        |
        |jdk:
        |  - oraclejdk8
