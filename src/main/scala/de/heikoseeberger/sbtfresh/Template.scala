@@ -87,7 +87,9 @@ private object Template {
         |        library.scalaTest              % Test,
         |        library.`scalacheck-shapeless` % Test,
         |        library.scalamock              % Test
-        |      ) ++ library.cats ++ library.akka ++ library.http4s ++ library.fs2 ++ library.circe ++ library.metrics
+        |      ) ++ library.cats ++ library.akka ++ library.http4s
+        |      ++ library.fs2 ++ library.circe ++ library.metrics
+        |      ++ library.specs2
         |    )
         |
         |// *****************************************************************************
@@ -118,6 +120,7 @@ private object Template {
         |      val simulacrum              = "1.0.0"
         |      val `scalacheck-shapeless`  = "1.2.4"
         |      val `akka-http-marshallers` = "1.31.0"
+        |      val specs2                  = "4.8.3"
         |    }
         |    val scalaLogging           = "com.typesafe.scala-logging" %% "scala-logging"             % "3.9.2"
         |    val `logback-classic`      = "ch.qos.logback"             % "logback-classic"            % "1.2.3"
@@ -127,6 +130,12 @@ private object Template {
         |    val `scalacheck-shapeless` = "com.github.alexarchambault" %% "scalacheck-shapeless_1.14" % Version.`scalacheck-shapeless`
         |    val scalamock              = "org.scalamock"              %% "scalamock"                 % "4.4.0"
         |    val simulacrum             = "org.typelevel"              %% "simulacrum"                % Version.simulacrum
+        |    val specs2 = Seq(
+        |      "org.specs2" %% "specs2-core"       % Version.specs2 % Test,
+        |      "org.specs2" %% "specs2-scalacheck" % Version.specs2 % Test,
+        |      "org.specs2" %% "specs2-cats"       % Version.specs2 % Test,
+        |      "org.specs2" %% "specs2-shapeless"  % Version.specs2 % Test
+        |    )
         |    val cats = Seq(
         |      "org.typelevel" %% "cats-core"     % Version.cats,
         |      "org.typelevel" %% "cats-laws"     % Version.cats,
